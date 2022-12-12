@@ -9,10 +9,25 @@ class ProductService extends ChangeNotifier {
       'productosappflutter-1ecc4-default-rtdb.firebaseio.com';
   final List<ProductResponse> products = [];
   bool isLoading = false;
+  bool isSaving = false;
+  late ProductResponse selectedProduct;
 
   ProductService() {
     this.loadProducts();
   }
+
+  // Future saveOrCreateProduct(ProductResponse product) async {
+
+  //   try {
+  //     isSaving = true;
+  //     notifyListeners()
+  //   } catch (e) {
+
+  //     isSaving = false;
+  //     notifyListeners();
+  //   }
+
+  // }
 
   Future<List<ProductResponse>> loadProducts() async {
     final url = Uri.https(_baseUrl, 'products.json');
@@ -35,7 +50,7 @@ class ProductService extends ChangeNotifier {
       return this.products;
     } catch (e) {
       final List<ProductResponse> list = [];
-      print('$list list');
+
       isLoading = false;
       notifyListeners();
       return list;

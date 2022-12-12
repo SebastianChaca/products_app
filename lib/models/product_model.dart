@@ -40,4 +40,12 @@ class ProductResponse {
         "price": price,
         'descript': descript == null ? null : descript
       };
+
+  ProductResponse copy() => ProductResponse(
+      available: this.available,
+      name: this.name,
+      price: this.price,
+      picture: this.picture,
+      descript: this.descript,
+      id: this.id);
 }
