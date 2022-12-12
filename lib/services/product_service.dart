@@ -25,7 +25,7 @@ class ProductService extends ChangeNotifier {
 
       productsMap.forEach((key, value) {
         final tempProduct = ProductResponse.fromMap(value);
-        print(tempProduct);
+
         tempProduct.id = key;
         products.add(tempProduct);
       });

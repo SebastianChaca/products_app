@@ -19,17 +19,22 @@ class ProductCard extends StatelessWidget {
             _BackgroundImage(
               product: product,
             ),
-            _ProductDetails(),
+            _ProductDetails(
+              product: product,
+            ),
             Positioned(
-              child: _PriceTag(),
+              child: _PriceTag(
+                product: product,
+              ),
               top: 0,
               right: 0,
             ),
-            Positioned(
-              child: _NotAvailable(),
-              top: 0,
-              left: 0,
-            )
+            if (!product.available)
+              Positioned(
+                child: _NotAvailable(),
+                top: 0,
+                left: 0,
+              )
           ],
         ),
       ),
@@ -72,18 +77,20 @@ class _NotAvailable extends StatelessWidget {
 }
 
 class _PriceTag extends StatelessWidget {
+  final ProductResponse product;
   const _PriceTag({
     Key? key,
+    required this.product,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: const FittedBox(
+      child: FittedBox(
         fit: BoxFit.contain,
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Text('\$100',
+            child: Text(product.price.toString(),
                 style: TextStyle(color: Colors.white, fontSize: 20))),
       ),
       width: 100,
@@ -98,8 +105,10 @@ class _PriceTag extends StatelessWidget {
 }
 
 class _ProductDetails extends StatelessWidget {
+  final ProductResponse product;
   const _ProductDetails({
     Key? key,
+    required this.product,
   }) : super(key: key);
 
   @override
@@ -113,20 +122,20 @@ class _ProductDetails extends StatelessWidget {
         decoration: _buildBoxDecoration(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
-              'Disco duro',
+              product.name.toString(),
               style: TextStyle(
                   fontSize: 20,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             Text(
-              ' IDDisco duro',
+              product.descript.toString(),
               style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 15,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
               maxLines: 2,

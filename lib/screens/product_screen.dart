@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:productos_app/models/product_model.dart';
 import 'package:productos_app/widgets/widgets.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -7,20 +8,22 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ProductResponse product =
+        ModalRoute.of(context)!.settings.arguments as ProductResponse;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             Stack(
               children: [
-                const ProductImage(),
+                ProductImage(product: product),
                 Positioned(
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   top: 60,
-                  left: 20,
+                  left: 5,
                 ),
                 Positioned(
                   child: IconButton(
@@ -29,11 +32,13 @@ class ProductScreen extends StatelessWidget {
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   top: 60,
-                  right: 20,
+                  right: 5,
                 )
               ],
             ),
-            const _ProductForm(),
+            _ProductForm(
+              product: product,
+            ),
             const SizedBox(
               height: 100,
             )
@@ -50,8 +55,10 @@ class ProductScreen extends StatelessWidget {
 }
 
 class _ProductForm extends StatelessWidget {
+  final ProductResponse product;
   const _ProductForm({
     Key? key,
+    required this.product,
   }) : super(key: key);
 
   @override
@@ -67,18 +74,20 @@ class _ProductForm extends StatelessWidget {
           children: [
             const SizedBox(height: 10),
             TextFormField(
+              initialValue: product.name,
               decoration:
                   InputDecorations.authInputDecoration('Nombre del producto'),
             ),
             const SizedBox(height: 30),
             TextFormField(
+              initialValue: product.price.toString(),
               keyboardType: TextInputType.number,
               decoration:
                   InputDecorations.authInputDecoration('Precio del producto'),
             ),
             const SizedBox(height: 30),
             SwitchListTile.adaptive(
-              value: true,
+              value: product.available,
               onChanged: (value) {},
               title: const Text('Disponible'),
             ),

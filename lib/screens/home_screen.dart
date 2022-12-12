@@ -23,7 +23,8 @@ class HomeScreen extends StatelessWidget {
           child: ProductCard(
             product: productService.products[index],
           ),
-          onTap: () => Navigator.pushNamed(context, 'product'),
+          onTap: () => Navigator.pushNamed(context, 'product',
+              arguments: productService.products[index]),
         ),
         itemCount: productService.products.length,
       ),

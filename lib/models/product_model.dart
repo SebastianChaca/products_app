@@ -10,14 +10,15 @@ class ProductResponse {
       required this.name,
       this.picture,
       required this.price,
-      required this.productResponseAvailable,
-      this.id});
+      this.id,
+      this.descript});
 
   bool available;
   String name;
   String? picture;
   double price;
-  bool productResponseAvailable;
+  String? descript;
+
   String? id;
 
   factory ProductResponse.fromJson(String str) =>
@@ -26,20 +27,17 @@ class ProductResponse {
   String toJson() => json.encode(toMap());
 
   factory ProductResponse.fromMap(Map<String, dynamic> json) => ProductResponse(
-        available: json["available"] == null ? null : json["available"],
-        name: json["name"],
-        picture: json["picture"],
-        price: json["price"].toDouble(),
-        productResponseAvailable:
-            json["available "] == null ? null : json["available "],
-      );
+      available: json["available"] == null ? false : json["available"],
+      name: json["name"],
+      picture: json["picture"],
+      price: json["price"].toDouble(),
+      descript: json["descript"] == null ? null : json["descript"]);
 
   Map<String, dynamic> toMap() => {
         "available": available == null ? null : available,
         "name": name,
         "picture": picture,
         "price": price,
-        "available ":
-            productResponseAvailable == null ? null : productResponseAvailable,
+        'descript': descript == null ? null : descript
       };
 }
