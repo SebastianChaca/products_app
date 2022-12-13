@@ -19,14 +19,20 @@ class ProductScreen extends StatelessWidget {
 
     return ChangeNotifierProvider(
       create: (_) => ProductFormProvider(selectedProduct),
-      child: _ProductScreenBody(selectedProduct: selectedProduct),
+      child: _ProductScreenBody(
+        selectedProduct: selectedProduct,
+        productService: productService,
+      ),
     );
   }
 }
 
 class _ProductScreenBody extends StatelessWidget {
+  final ProductService productService;
+
   const _ProductScreenBody({
     Key? key,
+    required this.productService,
     required this.selectedProduct,
   }) : super(key: key);
 
@@ -70,8 +76,9 @@ class _ProductScreenBody extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          productForm.isValidForm();
+        onPressed: () async {
+          if (!productForm.isValidForm()) return;
+          await productService.saveOrCreateProduct(productForm.product);
         },
         child: const Icon(Icons.save_outlined),
       ),

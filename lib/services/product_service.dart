@@ -16,18 +16,39 @@ class ProductService extends ChangeNotifier {
     this.loadProducts();
   }
 
-  // Future saveOrCreateProduct(ProductResponse product) async {
+  Future saveOrCreateProduct(ProductResponse product) async {
+    isSaving = true;
+    notifyListeners();
+    if (product.id == null) {
+      createProduct(product);
+    } else {
+      await updateProduct(product);
+    }
 
-  //   try {
-  //     isSaving = true;
-  //     notifyListeners()
-  //   } catch (e) {
+    isSaving = false;
+    notifyListeners();
+  }
 
-  //     isSaving = false;
-  //     notifyListeners();
-  //   }
+  Future<String> updateProduct(ProductResponse product) async {
+    final url = Uri.https(_baseUrl, 'products/${product.id}.json');
+    await http.put(url, body: product.toJson());
 
-  // }
+    final index = products.indexWhere((element) => element.id == product.id);
+
+    products[index] = product;
+
+    return product.id!;
+  }
+
+  Future<String> createProduct(ProductResponse product) async {
+    final url = Uri.https(_baseUrl, 'products.json');
+    final resp = await http.post(url, body: product.toJson());
+    final decodedData = jsonDecode(resp.body);
+    product.id = decodedData['name'];
+    products.add(product);
+
+    return product.id!;
+  }
 
   Future<List<ProductResponse>> loadProducts() async {
     final url = Uri.https(_baseUrl, 'products.json');
